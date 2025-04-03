@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forgot Password</title>
+<style>
+  body {
+      background-image: url("https://wallpapercave.com/wp/wp1879447.jpg");
+      background-size: cover;
+      background-position: center;
+      color: #b2aaaa; /* Text color */
+      display: flex;
+      justify-content: flex-end; /* Align content to the right */
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+  }
+  .content {
+      width: 400px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+      border-radius: 10px;
+      text-align: center;
+      animation: fadeIn 1s ease; /* Animation for fade-in effect */
+      margin-right: 50px; /* Adjust margin for positioning */
+  }
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+          transform: translateY(-20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+  input[type="email"],
+  input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      box-sizing: border-box;
+      background-color: #f8f8f8; /* Light gray background */
+      color: #333; /* Text color */
+      transition: background-color 0.3s ease; /* Smooth transition for background color */
+  }
+  input[type="submit"],
+  input[type="button"] {
+      background-color: #3d3939; /* Button background color */
+      color: #fff; /* Button text color */
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+  }
+  h2 {
+      color: #333; 
+      margin-top: 0;
+  }
+  .error-message {
+      color: red;
+      margin-top: 5px;
+      font-size: 14px;
+      text-align: left;
+  }
+  .reset-password-form {
+      display: none;
+  }
+</style>
+</head>
+<body>
+<div class="content">
+    <h2>Forgot Password</h2>
+    <form id="forgotPasswordForm" onsubmit="return validateForgotPasswordForm()">
+        <input type="email" id="forgotPasswordEmail" placeholder="Enter your email" required>
+        <span class="error-message" id="emailErrorMessage"></span>
+        <input type="submit" value="Submit">
+    </form>
+    <form id="resetPasswordForm" class="reset-password-form">
+        <input type="password" id="newPassword" placeholder="Enter new password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+        <span class="error-message" id="passwordErrorMessage"></span>
+        <input type="button" value="Reset Password" onclick="resetPassword()">
+    </form>
+</div>
+<script>
+function validateForgotPasswordForm() {
+    var email = document.getElementById("forgotPasswordEmail").value.trim();
+    var emailPattern = /\@gmail\.com$/i; // Regular expression to match Gmail email
+    var emailErrorMessage = document.getElementById("emailErrorMessage");
+    
+    // Reset error message
+    emailErrorMessage.textContent = "";
+    
+    // Validate email
+    if (!emailPattern.test(email)) {
+        emailErrorMessage.textContent = "Please enter a valid Gmail email address.";
+        return false;
+    } else {
+        document.getElementById("forgotPasswordForm").style.display = "none";
+        document.getElementById("resetPasswordForm").style.display = "block";
+        return false; // Prevent form submission for demo
+    }
+}
+
+function resetPassword() {
+    var newPassword = document.getElementById("newPassword").value.trim();
+    var confirmPassword = document.getElementById("confirmPassword").value.trim();
+    var passwordErrorMessage = document.getElementById("passwordErrorMessage");
+    
+    // Reset error message
+    passwordErrorMessage.textContent = "";
+    
+    // Validate password match and non-empty fields
+    if (newPassword === "" || confirmPassword === "") {
+        passwordErrorMessage.textContent = "Both fields are required.";
+        return false;
+    } else if (newPassword !== confirmPassword) {
+        passwordErrorMessage.textContent = "Passwords do not match.";
+    } else if (newPassword.length < 8) {
+        passwordErrorMessage.textContent = "Password must be at least 8 characters long.";
+    } else if (!(/[A-Z]/.test(newPassword))) {
+        passwordErrorMessage.textContent = "Password must contain at least one uppercase letter.";
+    } else if (!(/[a-z]/.test(newPassword))) {
+        passwordErrorMessage.textContent = "Password must contain at least one lowercase letter.";
+    } else if (!(/[0-9]/.test(newPassword))) {
+        passwordErrorMessage.textContent = "Password must contain at least one digit.";
+    } else {
+        // Password reset successful
+        alert("Password reset successful!"); // Display a success message (you can modify this part)
+        // Clear form fields and hide the reset password form
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+        document.getElementById("resetPasswordForm").style.display = "none";
+        document.getElementById("forgotPasswordForm").style.display = "block";
+    }
+}
+</script>
+</body>
+</html>

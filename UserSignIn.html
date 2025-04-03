@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Sign In</title>
+<style>
+  body {
+      background-image: url("https://wallpapercave.com/wp/wp1879447.jpg");
+      background-size: cover;
+      background-position: center;
+      color: #b2aaaa; /* Text color */
+      display: flex;
+      justify-content: flex-end; /* Align content to the right */
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+  }
+  .content {
+      width: 400px;
+      padding: 20px;
+      background-color: #161615; /* Perfume bottle color */
+      border-radius: 0 0 50% 50%;
+      position: relative;
+      margin-right: 50px; /* Add margin to the right */
+  }
+  .content:before {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 25px solid #302f2e; /* Perfume bottle color */
+  }
+  input[type="text"],
+  input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ccc; /* Text box border color */
+      border-radius: 20px;
+      box-sizing: border-box;
+      background-color: #f8f8f8; /* Text box background color */
+      color: #333; /*text color inside text boxes */
+  }
+  input[type="submit"] {
+      background-color: #3d3939; /* Submit button color */
+      color: #a9a4a4; /* Submit button text color */
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+  }
+  h2 {
+      color: #8a8383; 
+      text-align: center;
+      margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="content">
+    <form id="userSigninform">
+        <h2>User Sign In</h2>
+        <input type="text" id="userSigninUsername" placeholder="Username">
+        <input type="password" id="userSigninPassword" placeholder="Password">
+        <input type="submit" value="Sign In">
+        <a href="ForgotPass.html" style="text-decoration: none; color: #fff; display: block; text-align: center; margin-top: 10px;">Forgot Password?</a>
+    </form>
+</div>
+<script>
+function validateUserSigninform() {
+    var username = document.getElementById("userSigninUsername").value;
+    var password = document.getElementById("userSigninPassword").value;
+    if (username === "" || password === "") {
+        alert("Ops! Both Username and Password required.");
+        return false;
+    } else {
+        alert("Woah! User Signin successful!");
+        return true;
+    }
+}
+document.getElementById("userSigninform").addEventListener("submit", function(event) {
+    if (!validateUserSigninform()) {
+        event.preventDefault();
+    }
+});
+  // Script to handle forgot password.
+  document.querySelector('a[href="index.html"]').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default link behavior (navigation)
+    window.location.href = this.getAttribute('href'); // Redirect to the Forgot Password page
+});
+</script>
+</body>
+</html>

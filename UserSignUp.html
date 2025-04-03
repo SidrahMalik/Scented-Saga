@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Sign Up</title>
+<style>
+  body {
+      background-image: url("https://wallpapercave.com/wp/wp1879447.jpg");
+      background-size: cover;
+      background-position: center;
+      color: #b2aaaa; /* Text color */
+      display: flex;
+      justify-content: flex-end; /* Align content to the right */
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+  }
+  .content {
+      width: 450px; /* Adjusted width */
+      height: 550px; /* Adjusted height */
+      padding: 20px;
+      background-color: #161615; /* Perfume bottle color */
+      border-radius: 0 0 50% 50%; /* Adjusted bottle shape */
+      position: relative;
+      margin-right: 50px; /* Add margin to the right */
+  }
+  .content:before {
+      content: "";
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 25px solid #302f2e; /* Perfume bottle color */
+  }
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="submit"],
+  select {
+      width: calc(100% - 40px); /* Adjusted width */
+      padding: 10px; /* Same padding as input fields */
+      margin: 5px 20px; /* Adjusted margin */
+      border: none;
+      border-radius: 20px; /* Adjusted border-radius */
+      background-color: #f8f8f8; /* Text box background color */
+      color: #333; /* Text color inside text boxes */
+      outline: none; /* Remove default outline */
+      box-sizing: border-box; /* Include padding and border in element's total width and height */
+  }
+  input[type="submit"] {
+      background-color: #3d3939;
+      color: #fff; /* Button text color */
+      border-radius: 20px; /* Adjusted border-radius */
+      cursor: pointer;
+      width: calc(100% - 40px); /* Adjusted width */
+      margin: 5px 20px; /* Adjusted margin */
+  }
+  h2 {
+      color: #8a8383; 
+      text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="content">
+    <form id="signupform" action="http://localhost:3001/send-email" method="POST">
+        <h2>User Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <input type="email" id="signupEmail" placeholder="Email">
+        <input type="text" id="signupFullName" placeholder="Full Name">
+        <input type="number" id="signupAge" placeholder="Age">
+        <input type="text" id="signupAddress" placeholder="Address">
+        <input type="text" id="signupCity" placeholder="City">
+        <select id="signupReason">
+            <option value="">Why are you interested in making an account?</option>
+            <option value="browsing">For just browsing</option>
+            <option value="buying">For buying</option>
+        </select>
+        <input type="submit" value="Sign Up">
+    </form>
+    <form id="verificationform" style="display:none;">
+        <input type="text" id="verificationCode" placeholder="Enter Verification Code">
+        <input type="submit" value="Verify Email">
+    </form>
+</div>
+<script>
+var email, verificationCode;
+var emailSent = false; // Flag to track if email has been sent
+
+function validateSignupform() {
+    var username = document.getElementById("signupUsername").value;
+    var password = document.getElementById("signupPassword").value;
+    var email = document.getElementById("signupEmail").value;
+    var age = document.getElementById("signupAge").value;
+    var fullName = document.getElementById("signupFullName").value;
+    var address = document.getElementById("signupAddress").value;
+    var city = document.getElementById("signupCity").value;
+    var reason = document.getElementById("signupReason").value;
+
+    if (username === "" || password === "" || email === "" || age === "" || fullName === "" || address === "" || city === "" || reason === "")   {
+        alert("Ops! All fields required");
+        return false;
+    }
+    if (!/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password)) {
+        alert("For the password to be strong, it must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
+        return false;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+        alert("Invalid email address");
+        return false;
+    }
+
+    if (isNaN(age) || age < 18 || age > 100) {
+        alert("Age must be a number between 18 and 100");
+        return false;
+    }
+
+    if (reason === "buying") {
+        alert("Congrats! You are the part of Scented Saga Family :) and your choice is amazing.");
+    } else if (reason === "browsing") {
+        alert("Congrats! You are the part of Scented Saga Family :) and your choice is good.");
+    }
+
+    return true;
+}
+
+document.getElementById("signupform").addEventListener("submit", function(event) {
+    if (!validateSignupform()) {
+        event.preventDefault();
+        return;
+    }
+
+    var formData = new FormData(this);
+    email = formData.get("signupEmail");
+
+    if (!emailSent) {
+        // Send email with verification code only if it hasn't been sent already
+        fetch('http://localhost:3001/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log(email);
+                alert("Email sent successfully! Check your email for the verification code.");
+                // Hide sign-up form and show verification form
+                document.getElementById("signupform").style.display = "none";
+                document.getElementById("verificationform").style.display = "block";
+                emailSent = true; // Update flag
+            } else {
+                throw new Error("Failed to send email");
+            }
+        })
+        .catch(error => {
+            alert("Error sending email: " + error.message);
+        });
+    } else {
+        alert("Email has already been sent. Please check your email for the verification code.");
+    }
+});
+
+document.getElementById("verificationform").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    alert("Verified You have been successfully signed up. Thankyou!");
+    /*var formData = new FormData(this);
+    verificationCode = formData.get("verificationCode");
+
+    // Verify the code
+    // Send verification code to server for validation
+    fetch('http://localhost:3001/verify-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, verificationCode }) // Use email and verification code from global scope
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Email verified successfully! You have been signed up.");
+            // Redirect user to another page or perform further actions
+        } else {
+            throw new Error("Failed to verify email");
+        }
+    })
+    .catch(error => {
+        alert("Error verifying email: " + error.message);
+    });*/
+});
+</script>
+</body>
+</html>

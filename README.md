@@ -1,11 +1,24 @@
+# 🛍️ Scented Saga – Perfume E-commerce Website
 
-Scented Saga – Perfume E-commerce Website
-HTML | CSS | JavaScript | Firebase | Node.js | Nodemailer
+Scented Saga is a user-friendly and visually appealing perfume store web app, where users can browse, view, and purchase perfumes. The platform features separate user and admin dashboards, OTP-based email verification, and a seamless shopping experience.
 
-Developed a perfume store website with secure User/Admin panels and real-time email verification.
+## 🔑 Features
 
-Used Firebase Authentication for login/sign-up, and Nodemailer via a Node.js server for OTP-based email verification.
+- 🧾 User Registration & Login (with OTP-based email verification)
+- 🛒 Browse & Purchase Perfumes
+- 👩‍💼 Admin Panel to Manage Products and Orders
+- 📧 Email Verification via OTP (Nodemailer)
+- 📱 Responsive UI Design
 
-Designed responsive front-end with HTML/CSS and dynamic interaction using JavaScript.
+## 🚀 Tech Stack
 
-Implemented cart, order flow, and user dashboard functionalities for a complete e-commerce experience.
+- **Frontend:** HTML, CSS, JavaScript  
+- **Authentication:** Firebase Authentication  
+- **Backend:** Node.js  
+- **Email Service:** Nodemailer  
+
+
+
+
+
+
